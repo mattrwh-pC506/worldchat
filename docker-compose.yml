@@ -1,0 +1,23 @@
+version: '3'
+services:
+    redis:
+        image: redis:5
+        ports:
+            - 6379:6379
+        volumes:
+            - ./redis.conf:/redis.conf
+        command: [ "redis-server", "/redis.conf" ]
+    webserver:
+      build: ./api
+      command: uvicorn ip_locations.asgi:application --host 0.0.0.0 --port 8000
+      volumes:
+        - .:/api
+      ports:
+        - "8000:8000"
+    webui:
+      build: ./ui
+      command: serve -s build -p 3000
+      volumes:
+        - .:/ui
+      ports:
+        - '3000:3000'
