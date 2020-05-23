@@ -20,6 +20,12 @@ const useStyles = makeStyles((theme: Theme) =>
         maxWidth: '400px',
       },
     },
+    controls: {
+      display: 'flex',
+      marginTop: 15,
+      width: 300,
+      justifyContent: 'center',
+    },
   }),
 );
 
@@ -66,8 +72,12 @@ export const Login = () => {
         value={form.password}
         onChange={handleChange('password')}
       />
-      <Button onClick={submitForm}>Login</Button>
-      <Button onClick={routeToRegister}>Register for An Account</Button>
+      <section className={classes.controls}>
+        <Button onClick={submitForm} variant="outlined">
+          Submit Login
+        </Button>
+        <Button onClick={routeToRegister}>Register for An Account</Button>
+      </section>
     </section>
   );
 };

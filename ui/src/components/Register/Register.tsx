@@ -20,6 +20,12 @@ const useStyles = makeStyles((theme: Theme) =>
         maxWidth: '400px',
       },
     },
+    controls: {
+      display: 'flex',
+      marginTop: 15,
+      width: 300,
+      justifyContent: 'center',
+    },
   }),
 );
 
@@ -96,8 +102,12 @@ export const Register = () => {
         value={form.address}
         onChange={handleChange('address')}
       />
-      <Button onClick={submitForm}>Register</Button>
-      <Button onClick={routeToLogin}>Login Instead</Button>
+      <section className={classes.controls}>
+        <Button onClick={submitForm} variant="outlined">
+          Submit Registration
+        </Button>
+        <Button onClick={routeToLogin}>Login Instead</Button>
+      </section>
     </section>
   );
 };
