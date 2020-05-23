@@ -104,7 +104,7 @@ export const Register = () => {
       />
       <section className={classes.controls}>
         <Button onClick={submitForm} variant="outlined">
-          Submit Registration
+          Submit
         </Button>
         <Button onClick={routeToLogin}>Login Instead</Button>
       </section>

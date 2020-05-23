@@ -74,7 +74,7 @@ export const Login = () => {
       />
       <section className={classes.controls}>
         <Button onClick={submitForm} variant="outlined">
-          Submit Login
+          Login
         </Button>
         <Button onClick={routeToRegister}>Register for An Account</Button>
       </section>
