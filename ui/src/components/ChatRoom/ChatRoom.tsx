@@ -81,8 +81,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     logout: {
       position: 'fixed',
-      top: '5px',
-      right: '5px',
+      top: '10px',
+      right: '10px',
     },
     leaveButtonContainer: {
       display: 'flex',
