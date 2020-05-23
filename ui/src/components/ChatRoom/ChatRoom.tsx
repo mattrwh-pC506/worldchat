@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import moment from 'moment';
 import { get } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -25,9 +26,10 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: 'column',
       width: '100vw',
       alignItems: 'center',
-      transform: 'translateY(15vh)',
+      transform: 'translateY(8vh)',
       '& > *': {
-        width: '40vw',
+        width: '90vw',
+        maxWidth: '600px',
       },
     },
     messageInput: {
@@ -41,9 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: 'column',
       alignItems: 'flex-start',
       minHeight: 300,
-      maxWidth: 'calc(40vw - 20px)',
       margin: theme.spacing(1),
-      padding: theme.spacing(1),
       borderRadius: 10,
       border: '1px solid #00f013',
       '& > *': {
@@ -57,9 +57,11 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     chatterList: {
       margin: theme.spacing(1),
+      marginBottom: theme.spacing(2),
       display: 'flex',
       alignItems: 'flex-start',
       maxHeight: 400,
+      flexWrap: 'wrap',
       overflowY: 'auto',
       '& > *': {
         border: '1px solid #00f013',
@@ -77,11 +79,15 @@ const useStyles = makeStyles((theme: Theme) =>
       border: '1px solid #08cb17',
       borderRadius: 10,
     },
+    logout: {
+      position: 'fixed',
+      top: '5px',
+      right: '5px',
+    },
     leaveButtonContainer: {
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'flex-start',
-      width: '40vw',
     },
   }),
 );
@@ -152,6 +158,11 @@ export const ChatRoom = () => {
     }
   };
 
+  const handleLogout = () => {
+    sessionStorage.removeItem('token');
+    window.location.pathname = '/login';
+  };
+
   const renderChatters = () => {
     return chatters.map((chatter: NSChatStore.IChatter) => {
       return (
@@ -181,6 +192,10 @@ export const ChatRoom = () => {
     );
   };
 
+  const renderPlaceholder = () => {
+    return `(${user.username}): ...`;
+  };
+
   const renderChatInput = () => {
     return (
       <section className={classes.messageInput}>
@@ -190,6 +205,7 @@ export const ChatRoom = () => {
           onChange={handleMessageChange}
           onKeyPress={onSubmitMessageKeypress}
           value={message}
+          placeholder={renderPlaceholder()}
         />
         <Button onClick={submitMessage}>Send</Button>
       </section>
@@ -208,18 +224,39 @@ export const ChatRoom = () => {
     });
   };
 
-  if (joined && username) {
+  const renderLogout = () => {
     return (
-      <section className={classes.root}>
-        <section>{renderChatInput()}</section>
-        <section className={classes.chatBox}>{renderChatBox()}</section>
-        <section className={classes.chatterList}>{renderChatters()}</section>
-        <section className={classes.leaveButtonContainer}>{renderLeaveButton()}</section>
-      </section>
+      <Button
+        className={clsx(classes.button, classes.logout)}
+        onClick={handleLogout}
+        variant="outlined"
+      >
+        Logout
+      </Button>
     );
-  } else if (username) {
-    return <section className={classes.root}>{renderJoinButton()}</section>;
-  } else {
-    return null;
-  }
+  };
+
+  const renderMainWindow = () => {
+    if (joined && username) {
+      return (
+        <section className={classes.root}>
+          <section>{renderChatInput()}</section>
+          <section className={classes.chatBox}>{renderChatBox()}</section>
+          <section className={classes.chatterList}>{renderChatters()}</section>
+          <section className={classes.leaveButtonContainer}>{renderLeaveButton()}</section>
+        </section>
+      );
+    } else if (username) {
+      return <section className={classes.root}>{renderJoinButton()}</section>;
+    } else {
+      return null;
+    }
+  };
+
+  return (
+    <section>
+      {renderLogout()}
+      {renderMainWindow()}
+    </section>
+  );
 };

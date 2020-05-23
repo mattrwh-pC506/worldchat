@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useStoreDispatch } from '../../store/useStoreHooks';
 import { useUserSelectors } from '../../store/user/user.hooks';
-import { registerUser } from '../../store/apis/auth.actions';
+import { registerUser, isUsernameAvailable } from '../../store/apis/auth.actions';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -16,7 +16,8 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       transform: 'translateY(30vh)',
       '& > *': {
-        width: '40vw',
+        width: '90vw',
+        maxWidth: '400px',
       },
     },
   }),
@@ -51,8 +52,19 @@ export const Register = () => {
     window.location.pathname = '/login';
   };
 
+  const checkAvailability = () => {
+    const { username } = form;
+    dispatch(isUsernameAvailable({ username }));
+  };
+
+  const onSubmitMessageKeypress = (event: any) => {
+    if (event.key == 'Enter') {
+      submitForm();
+    }
+  };
+
   return (
-    <section className={classes.root}>
+    <section className={classes.root} onKeyPress={onSubmitMessageKeypress}>
       <TextField
         id="username"
         type="username"
@@ -60,6 +72,7 @@ export const Register = () => {
         variant="filled"
         value={form.username}
         onChange={handleChange('username')}
+        onBlur={checkAvailability}
       />
       <TextField
         id="password"

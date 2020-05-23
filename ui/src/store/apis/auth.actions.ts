@@ -4,13 +4,26 @@ import { GenDispatch, IStoreRoot } from '../store.types';
 import { api, BASE_URL } from '../../api';
 import { setUser } from '../user/user.actions';
 
+export const isUsernameAvailable = (payload: { username: string }) => (
+  dispatch: GenDispatch,
+  getState: () => IStoreRoot,
+) => {
+  const { username } = payload;
+  api.get(`${BASE_URL()}/authentication/usernameAvailable/${username}`).then(
+    () => {},
+    (error: AxiosError) => {
+      alert(JSON.stringify(error.response));
+    },
+  );
+};
+
 export const loginUser = (payload: { username: string; password: string }) => (
   dispatch: GenDispatch,
   getState: () => IStoreRoot,
 ) => {
   const { username, password } = payload;
   api
-    .post(`${BASE_URL()}/chat/login`, { username, password })
+    .post(`${BASE_URL()}/authentication/login`, { username, password })
     .then(handleLoginSuccess(dispatch), handleLoginError);
 };
 
@@ -24,7 +37,7 @@ export const registerUser = (payload: {
   const { username, password, usertag, address, geocode } = payload;
   const registrationApi = (geocode: string) => {
     api
-      .post(`${BASE_URL()}/chat/register`, {
+      .post(`${BASE_URL()}/authentication/register`, {
         username,
         password,
         usertag,

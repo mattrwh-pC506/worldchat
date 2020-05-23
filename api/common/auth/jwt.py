@@ -1,18 +1,20 @@
+from typing import Callable, Any
 from functools import wraps
 from datetime import datetime, timedelta
 
-from django.core.exceptions import PermissionDenied
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.http import HttpResponse, HttpRequest
 from django.contrib.auth import authenticate
 import jwt
 
+from exception_handling.exceptions.auth import UserDoesNotExist, IncorrectPassword
+
 JWT_SECRET = settings.JWT_SECRET
 JWT_ALGORITHM = settings.JWT_ALGORITHM
 JWT_EXP_DELTA_SECONDS = settings.JWT_EXP_DELTA_SECONDS
 
-def when_authenticated(view):
+def when_authenticated(view: Callable):
     @wraps(view)
     def wrapper(request: HttpRequest, *args, **kwargs) -> HttpResponse:
         request.user = None
@@ -24,7 +26,9 @@ def when_authenticated(view):
                                  algorithms=[JWT_ALGORITHM])
 
             username = payload.get('username') 
-            request.user = User.objects.get(username=payload['username'])
+            request.user = User.objects.filter(username=username).first()
+            if not request.user:
+                raise UserDoesNotExist(username)
 
         if request.user:
             return view(request, *args, **kwargs)
@@ -33,16 +37,19 @@ def when_authenticated(view):
 
     return wrapper
 
-def build_jwt_token(username, exp):
+def build_jwt_token(username: str, exp: Any):
     payload = { 'username': username, 'exp': exp }
     return jwt.encode(payload, JWT_SECRET, JWT_ALGORITHM)
 
 def jwt_authenticate(username='', password='') -> (User, str):
-    user = authenticate(username=username, password=password)
-    if user is not None:
+    if not User.objects.filter(username=username).first():
+        raise UserDoesNotExist(username)
+
+    authenticated_user = authenticate(username=username, password=password)
+    if not authenticated_user:
+        raise IncorrectPassword()
+    else:
         exp = datetime.utcnow() + timedelta(seconds=JWT_EXP_DELTA_SECONDS)
         token = build_jwt_token(username, exp)
-        return user, token 
-    else:
-        raise PermissionDenied("Failed authentication attempt")
+        return authenticated_user, token 
 

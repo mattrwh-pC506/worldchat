@@ -10,7 +10,7 @@ from chat.models import Chatter
 
 @sync_to_async
 def get_chatter(username: str) -> Chatter:
-    return Chatter.objects.get(user__username=username)
+    return Chatter.objects.filter(user__username=username).first()
 
 @sync_to_async
 def save_chatter(chatter: Chatter):

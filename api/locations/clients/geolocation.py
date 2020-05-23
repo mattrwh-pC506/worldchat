@@ -42,6 +42,7 @@ def address_to_latlng_lookup(view):
     def wrapper(request: HttpRequest, address, *args, **kwargs):
         response: Response = GeolocationClient.get_latlng(address)
         results: List = json.loads(response.content).get("results", [])
+        print ("RESULTS", results)
         first_match = results[0].get("geometry", {}).get("location", {})
         latlng = "{},{}".format(first_match.get("lat"), first_match.get("lng"))
         return view(request, *args, latlng=latlng, **kwargs)

@@ -6,7 +6,7 @@ def build_matrix(source: str, target: str) -> List[List[str]]:
     target_latlng = target.split(",")
     return [[float(source_latlng[0]), float(target_latlng[0])], [float(source_latlng[1]), float(target_latlng[1])]]
 
-def calculate_distance_in_miles(matrix):
+def calculate_distance_in_miles(matrix: List[List[int]]):
     miles_conversion = 0.621371
     R = 6372800  # Earth radius in meters
     lat1 = matrix[0][0]

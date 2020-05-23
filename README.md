@@ -14,7 +14,7 @@ pytest
 
 ### Run Locally via Docker + Docker Compose
 ```
-# First, navigate to api/ip_locations/settings.py and set the following ENV Variables to your own keys
+# First, navigate to api/worldchat/settings.py and set the following ENV Variables to your own keys
 # SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'DUMMY_KEY') 
 # GOOGLE_API_KEY = os.getenv('GOOGLE_SECRET_KEY', '') 
 # RAPIDAPI_KEY = os.getenv('RAPIDAPI_KEY', '') 

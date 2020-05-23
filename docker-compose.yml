@@ -9,7 +9,7 @@ services:
         command: [ "redis-server", "/redis.conf" ]
     webserver:
       build: ./api
-      command: uvicorn ip_locations.asgi:application --host 0.0.0.0 --port 8000
+      command: uvicorn worldchat.asgi:application --host 0.0.0.0 --port 8000
       volumes:
         - .:/api
       ports:

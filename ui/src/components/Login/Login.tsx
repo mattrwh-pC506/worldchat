@@ -16,7 +16,8 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       transform: 'translateY(30vh)',
       '& > *': {
-        width: '40vw',
+        width: '90vw',
+        maxWidth: '400px',
       },
     },
   }),
@@ -41,8 +42,14 @@ export const Login = () => {
     window.location.pathname = '/register';
   };
 
+  const onSubmitMessageKeypress = (event: any) => {
+    if (event.key == 'Enter') {
+      submitForm();
+    }
+  };
+
   return (
-    <section className={classes.root}>
+    <section className={classes.root} onKeyPress={onSubmitMessageKeypress}>
       <TextField
         id="username"
         label="Username"

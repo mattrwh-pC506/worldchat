@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Any
 from collections import namedtuple
 
 class TypedTuple:
@@ -17,7 +17,7 @@ class TypedTuple:
 def typed_tuple_to_dict(typedtuple: TypedTuple) -> Dict:
     return unpack(typedtuple)
 
-def isnamedtupleinstance(typedtuple):
+def isnamedtupleinstance(typedtuple: Any):
     _type = type(typedtuple)
     bases = _type.__bases__
     if len(bases) != 1 or bases[0] != tuple:
