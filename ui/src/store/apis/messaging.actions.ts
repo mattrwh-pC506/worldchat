@@ -4,7 +4,7 @@ import { GenDispatch, IStoreRoot } from '../store.types';
 import { ActionTypes } from '../action.types';
 import { NSChatStore } from '../chat/chat.types';
 import { ChatKeys } from '../chat/chat.constants';
-import { setChatters, chatterJoined, chatterLeft, newMessage } from '../chat/chat.actions';
+import { chatterJoined, chatterLeft, newMessage } from '../chat/chat.actions';
 import { calculateDistance } from './location.actions';
 import { getOnlineChatters } from './chatters.actions';
 import { BASE_WSS_URL } from '../../api';
@@ -33,16 +33,14 @@ const messageHandler = (dispatch: GenDispatch) => (event: { data: string }) => {
   const { type, chatter = {}, chatters = [], message = {} } = messagePayload;
   switch (type) {
     case ActionTypes.CHATTER_JOINED:
-      dispatch(setChatters(chatKey)({ chatters }));
       setTimeout(() => {
         dispatch(getOnlineChatters);
-      }, 1000);
+      }, 500);
       break;
     case ActionTypes.CHATTER_LEFT:
-      dispatch(setChatters(chatKey)({ chatters }));
       setTimeout(() => {
         dispatch(getOnlineChatters);
-      }, 1000);
+      }, 500);
       break;
     case ActionTypes.NEW_MESSAGE:
       dispatch(newMessage(chatKey)({ message }));
