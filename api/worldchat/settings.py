@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', '') 
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'DUMMY_KEY') 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -143,8 +143,8 @@ USE_L10N = True
 
 USE_TZ = True
 
-GOOGLE_API_KEY = os.getenv('GOOGLE_SECRET_KEY', '') 
-RAPIDAPI_KEY = os.getenv('RAPIDAPI_KEY', '') 
+GOOGLE_API_KEY = os.getenv('GOOGLE_SECRET_KEY', 'DUMMY_KEY') 
+RAPIDAPI_KEY = os.getenv('RAPIDAPI_KEY', 'DUMMY_KEY') 
 
 JWT_SECRET = SECRET_KEY
 JWT_ALGORITHM = 'HS256'

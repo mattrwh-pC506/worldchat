@@ -4,7 +4,7 @@ import { GenDispatch, IStoreRoot } from '../store.types';
 import { ActionTypes } from '../action.types';
 import { NSChatStore } from '../chat/chat.types';
 import { ChatKeys } from '../chat/chat.constants';
-import { chatterJoined, chatterLeft, newMessage } from '../chat/chat.actions';
+import { setChatters, chatterJoined, chatterLeft, newMessage } from '../chat/chat.actions';
 import { calculateDistance } from './location.actions';
 import { getOnlineChatters } from './chatters.actions';
 import { BASE_WSS_URL } from '../../api';
@@ -30,22 +30,24 @@ export const leaveChat = (chatter: NSChatStore.IChatter) => {
 const messageHandler = (dispatch: GenDispatch) => (event: { data: string }) => {
   const chatKey = ChatKeys.RANDOM_CHAT;
   const messagePayload: any = JSON.parse(event.data);
-  const { type, chatter = {}, message = {} } = messagePayload;
+  const { type, chatter = {}, chatters = [], message = {} } = messagePayload;
   switch (type) {
     case ActionTypes.CHATTER_JOINED:
-      dispatch(getOnlineChatters);
+      dispatch(setChatters(chatKey)({ chatters }));
+      setTimeout(() => {
+        dispatch(getOnlineChatters);
+      }, 1000);
       break;
     case ActionTypes.CHATTER_LEFT:
-      dispatch(getOnlineChatters);
+      dispatch(setChatters(chatKey)({ chatters }));
+      setTimeout(() => {
+        dispatch(getOnlineChatters);
+      }, 1000);
       break;
     case ActionTypes.NEW_MESSAGE:
       dispatch(newMessage(chatKey)({ message }));
       break;
   }
-};
-
-const cleanupHandler = (dispatch: GenDispatch) => () => {
-  dispatch(connectToChat);
 };
 
 const chatListeners = () => (dispatch: GenDispatch, getState: () => IStoreRoot) => {

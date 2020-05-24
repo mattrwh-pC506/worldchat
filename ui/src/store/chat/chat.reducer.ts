@@ -58,11 +58,7 @@ const handleChatterLeft = (state: NSChatStore.IChat, action: GenAction) => {
 
 const handleSetChatters = (state: NSChatStore.IChat, action: GenAction) => {
   const { chatters } = action.payload;
-  const newChatters = [...state.chatters, ...chatters];
-  return {
-    ...state,
-    chatters: uniqBy(newChatters, (chatter: NSChatStore.IChatter) => chatter.username),
-  };
+  return { ...state, chatters };
 };
 
 const handleSetChatterDistance = (state: NSChatStore.IChat, action: GenAction) => {
@@ -90,7 +86,6 @@ export const chatReducer = (state = initialChatState, action: GenAction) => {
     case ActionTypes.SET_CHATTERS:
       return { ...state, [key]: handleSetChatters(state[key], action) };
     case ActionTypes.SET_CHATTER_DISTANCE:
-      console.log('DISTANCE ');
       return { ...state, [key]: handleSetChatterDistance(state[key], action) };
     default:
       return state;

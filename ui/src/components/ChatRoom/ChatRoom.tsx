@@ -55,6 +55,14 @@ const useStyles = makeStyles((theme: Theme) =>
         fontSize: 14,
       },
     },
+    chattersOnline: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      '& > *': {
+        marginBottom: 3,
+      },
+    },
     chatterList: {
       margin: theme.spacing(1),
       marginBottom: theme.spacing(2),
@@ -79,10 +87,12 @@ const useStyles = makeStyles((theme: Theme) =>
       border: '1px solid #08cb17',
       borderRadius: 10,
     },
-    logout: {
-      position: 'fixed',
-      top: '10px',
-      right: '10px',
+    waitingRoom: {
+      display: 'flex',
+      justifyContent: 'center',
+      '& > *': {
+        margin: 3,
+      },
     },
     leaveButtonContainer: {
       display: 'flex',
@@ -178,16 +188,21 @@ export const ChatRoom = () => {
 
   const renderJoinButton = () => {
     return (
-      <Button className={classes.button} onClick={handleJoin}>
-        Join Global Chat!
-      </Button>
+      <section className={classes.waitingRoom}>
+        <Button className={classes.button} onClick={handleJoin}>
+          Join 😎
+        </Button>
+        <Button className={classes.button} onClick={handleLogout} variant="outlined">
+          Logout 👋
+        </Button>
+      </section>
     );
   };
 
   const renderLeaveButton = () => {
     return (
       <Button className={classes.button} onClick={handleLeave}>
-        Leave Global Chat
+        Leave 👋
       </Button>
     );
   };
@@ -224,25 +239,16 @@ export const ChatRoom = () => {
     });
   };
 
-  const renderLogout = () => {
-    return (
-      <Button
-        className={clsx(classes.button, classes.logout)}
-        onClick={handleLogout}
-        variant="outlined"
-      >
-        Logout
-      </Button>
-    );
-  };
-
   const renderMainWindow = () => {
     if (joined && username) {
       return (
         <section className={classes.root}>
           <section>{renderChatInput()}</section>
           <section className={classes.chatBox}>{renderChatBox()}</section>
-          <section className={classes.chatterList}>{renderChatters()}</section>
+          <section className={classes.chattersOnline}>
+            <strong>Online Now</strong>
+            <section className={classes.chatterList}>{renderChatters()}</section>
+          </section>
           <section className={classes.leaveButtonContainer}>{renderLeaveButton()}</section>
         </section>
       );
@@ -253,10 +259,5 @@ export const ChatRoom = () => {
     }
   };
 
-  return (
-    <section>
-      {renderLogout()}
-      {renderMainWindow()}
-    </section>
-  );
+  return <section>{renderMainWindow()}</section>;
 };
