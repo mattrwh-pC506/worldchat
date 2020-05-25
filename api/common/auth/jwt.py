@@ -44,10 +44,9 @@ def build_jwt_token(username: str, exp: Any):
 def jwt_authenticate(username='', password='') -> (User, str):
     if not User.objects.filter(username=username).first():
         raise UserDoesNotExist(username)
-
     authenticated_user = authenticate(username=username, password=password)
     if not authenticated_user:
-        raise IncorrectPassword()
+        raise IncorrectPassword("{} submitted incorrect password".format(username))
     else:
         exp = datetime.utcnow() + timedelta(seconds=JWT_EXP_DELTA_SECONDS)
         token = build_jwt_token(username, exp)
