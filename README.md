@@ -23,8 +23,3 @@ docker-compose up -d
 
 # Head to localhost:3000
 ```
-
-### Play with Deployed site (heroku)
-```
-open https://guarded-plateau-50861.herokuapp.com/login
-```
